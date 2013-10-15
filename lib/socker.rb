@@ -1,6 +1,7 @@
 require_relative './socker/event_handlers.rb'
 require_relative './socker/helper.rb'
 
+require 'faye/websocket'
 require 'logger'
 
 module Socker

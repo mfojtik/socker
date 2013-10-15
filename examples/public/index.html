@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  </head>
+<body>
+  <div id="time"></div>
+</body>
+<script language="javascript" type="text/javascript">
+  var Socket = window.MozWebSocket || window.WebSocket,
+  socket = new Socket('ws://' + location.hostname + ':' + '9292' + '/')
+  socket.onmessage = function(event) {
+    $('#time').html(event.data)
+  };
+</script>
+</html>
