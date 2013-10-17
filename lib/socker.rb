@@ -20,9 +20,12 @@ module Socker
       @application = lambda do |env|
         return [501, {}, ['Sorry, but I am websocket app.']] unless is_websocket?(env)
         connection(env) do |c|
-          WEBSOCKET_STANDARD_EVENTS.each(&register_handler(c))
+          WEBSOCKET_STANDARD_EVENTS.each(&register_handler(c, env))
         end
       end
+      @application.class.instance_eval {
+        define_method(:log) { |message| Socker::App.log(message) }
+      }
       @application.freeze
       @application
     end
@@ -59,13 +62,22 @@ module Socker
       Faye::WebSocket.websocket?(env)
     end
 
-    def register_handler(connection)
-      lambda { |event| connection.on(event, &handle_with(event, socket: connection)) }
+    def register_handler(connection, env)
+      lambda { |event| connection.on(event, &handle_with(event, socket: connection, env: env)) }
     end
 
     def handle_with(event, opts={})
       if events[event]
-        lambda { |ev| handle(event, opts[:socket]); events[event].call(opts[:socket], ev) }
+        current_class = self.class
+        lambda do |ev|
+          @env = Rack::Request.new(opts[:env])
+          begin
+            handle(event, opts[:socket])
+            events[event].call(opts[:socket], ev)
+          rescue => error
+            current_class.log("[#{error.class}] #{error.message}\n#{error.backtrace.join("\n")}", :error)
+          end
+        end
       else
         method(:handle_undefined)
       end
