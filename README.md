@@ -4,6 +4,13 @@ socker
 A simple Ruby framework to build awesome WebSocket applications.
 The framework is based on the [faye/websocket](https://github.com/faye/faye-websocket-ruby) library.
 
+## Demo
+
+You can see the **chat** application demo (available in examples/ folder) in
+action here:
+
+http://socker-mfojtik.rhcloud.com/index.html
+
 ## Example
 
 ```ruby
@@ -39,11 +46,12 @@ class TimeServer < Socker::App
 end
 ```
 
-You can use [puma](http://puma.io/) to deploy this application. You also need
-HTML file with the JavaScript code (check examples/ directory), that will
-connect to this server and establish connection.
+You can use any websockets enabled server (like [puma](http://puma.io/)) to deploy this application.
 
-The Socker::App will then start a new EM timer and broadcast the current
+You also need HTML file with the JavaScript code (check examples/ directory),
+that will speak to this server.
+
+The `Socker::Ap`p will then spawn a new EM timer and broadcast the current
 time to all connected users. After the last user disconnect, the EM timer will
 be killed (and restarted again when someone connect again).
 
