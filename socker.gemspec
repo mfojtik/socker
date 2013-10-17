@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'socker'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.summary     = 'Framework for building WebSocket applications'
   s.description = "A simple lib that helps you build awesome websockets apps"
   s.authors     = ["Michal Fojtik"]
