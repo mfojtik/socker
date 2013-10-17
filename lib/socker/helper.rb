@@ -10,6 +10,10 @@ module Socker
       connections.each { |c| c.ping(message, &callback) }
     end
 
+    def params
+      @env.params
+    end
+
   end
 
 end
