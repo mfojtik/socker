@@ -11,6 +11,10 @@ action here:
 
 http://socker-mfojtik.rhcloud.com/index.html
 
+## Documentation
+
+RDOC: [rdoc.info/github/mfojtik/socker](http://rdoc.info/github/mfojtik/socker)
+
 ## Example
 
 ```ruby
