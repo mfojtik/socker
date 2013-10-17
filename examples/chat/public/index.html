@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script language="Javascript" src="http://www.codehelper.io/api/ips/?js"></script>
+  </head>
+<body>
+  <form method="POST" action="index.html" id="chat_frm">
+    <input type="text" name="message" value=""/>
+    <button type="submit">Send</button>
+  </form>
+  <div id="chat">
+    <ul></ul>
+  </div>
+</body>
+<script language="javascript" type="text/javascript">
+  var Socket = window.MozWebSocket || window.WebSocket,
+  socket = new Socket('ws://' + location.hostname + ':' + '9292' + '/?ip='+codehelper_ip.IP)
+
+  socket.onmessage = function(event) {
+    var data = JSON.parse(event.data);
+    $("#chat ul").prepend('<li><b>'+data.from+'</b>: '+data.message+'</li>');
+  };
+
+  $( "#chat_frm" ).submit(function(event) {
+    var input=$("#chat_frm > input");
+    socket.send(input.val());
+    input.val('');
+    event.preventDefault();
+  })
+</script>
+</html>
