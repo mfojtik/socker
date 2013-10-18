@@ -13,22 +13,11 @@ module Socker
 
     WEBSOCKET_STANDARD_EVENTS = [ :open, :close, :message, :error ]
 
-    attr_reader :events, :callbacks
+    attr_accessor :events
+    attr_reader :callbacks
 
     def initialize(callbacks={})
       @callbacks = callbacks
-      @application = lambda do |env|
-        return [501, {}, ['Sorry, but I am websocket app.']] unless is_websocket?(env)
-        connection(env) do |c|
-          WEBSOCKET_STANDARD_EVENTS.each(&register_handler(c, env))
-        end
-      end
-      # This is needed for Puma so we can log the requests to WebSockets
-      @application.class.instance_eval {
-        define_method(:log) { |message| Socker::App.log(message) }
-      }
-      @application.freeze
-      @application
     end
 
     # Helper method your application can use to register new handlers
@@ -42,8 +31,11 @@ module Socker
     # Handler could be anything that implements the .call method, like
     # lambda, Proc or Method...
     #
-    def on(event, handler)
+    def on(event, handler=nil, &block)
       @events ||= {}
+      handler = block unless handler
+      return @callbacks[:when_active] = handler if event == :active
+      return @callbacks[:when_idle] = handler if event == :idle
       raise "Unable register handler for unsupported event: #{event}" unless event_supported?(event)
       @events[event] ||= lambda { |socket, ev| handler.call(socket, ev) }
     end
@@ -53,6 +45,19 @@ module Socker
     # run Rack::URLMap.new('/' => MyServer.new.to_app)
     #
     def to_app
+      @application = lambda do |env|
+        return [501, {}, ['Sorry, but I am websocket app.']] unless is_websocket?(env)
+        connection(env) do |c|
+          WEBSOCKET_STANDARD_EVENTS.each(&register_handler(c, env))
+        end
+      end
+      # This is needed for Puma so we can log the requests to WebSockets
+      @application.class.instance_eval {
+        define_method(:log) { |message| Socker::App.log(message) }
+      }
+      # Prevent any modification of events or application itself at this point.
+      @events.freeze
+      @application.freeze
       @application
     end
 
