@@ -20,8 +20,7 @@ Climate](https://codeclimate.com/github/mfojtik/socker.png)](https://codeclimate
 
 ## Demo
 
-You can see the **chat** application demo (available in examples/ folder) in
-action here:
+Simple [chat](https://github.com/mfojtik/socker/tree/master/examples/chat) application demo running on [OpenShift](https://www.openshift.com):
 
 http://socker-mfojtik.rhcloud.com/index.html
 
