@@ -69,6 +69,10 @@ The `Socker::App` will then spawn a new EM timer and broadcast the current
 time to all connected users. After the last user disconnect, the EM timer will
 be killed (and restarted again when someone connect again).
 
+Check the complete
+[examples/timeserver](https://github.com/mfojtik/socker/tree/master/examples/timeserver)
+folder for more details.
+
 ### Sinatra modular application
 
 Yes! You can use Socker as a Sinatra extension as well. In that case you don't
@@ -111,6 +115,9 @@ class TimeServer < Sinatra::Base
 
 end
 ```
+
+Check the [examples/sinatra](https://github.com/mfojtik/socker/tree/master/examples/sinatra) folder for
+complete example.
 
 
 ## Installation
