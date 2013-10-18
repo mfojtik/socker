@@ -1,0 +1,16 @@
+language: ruby
+rvm:
+  - 1.8.7
+  - 1.9.3
+  - jruby-head
+  - rbx-19mode
+  - ruby-head
+jdk:
+  - openjdk7
+install:
+  - bundle install
+script:
+  - bundle exec rake test
+notifications:
+  email:
+    - mi@mifo.sk
