@@ -9,6 +9,9 @@ The framework is based on the [faye/websocket](https://github.com/faye/faye-webs
 
 ## Changelog:
 
+[![Code
+Climate](https://codeclimate.com/github/mfojtik/socker.png)](https://codeclimate.com/github/mfojtik/socker)
+
 * 0.0.4: Added support for Sinatra and Sinatra example
 * 0.0.1-0.0.3: Initial implementation and PoC, nothing interesting :-)
 
